@@ -1,0 +1,11 @@
+Cout = 1
+younes : o3
+1 : o2
+2 : o10
+3 : o7
+4 : o8
+5 : o6
+6 : o1
+yanis : o9
+8 : o5
+9 : o4

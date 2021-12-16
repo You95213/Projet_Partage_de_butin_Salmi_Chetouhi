@@ -278,4 +278,14 @@ public class Pirate {
 		return b;
 	}
 	
+	/**
+	* Methode qui permet de récupérer 
+	* la liste des pirates dont il est jaloux
+	* 
+	* @return la liste des pirates dont il est jaloux
+	*/
+	public ArrayList<Pirate> getJalousie(){
+		return jalousie;
+	}
+	
 }

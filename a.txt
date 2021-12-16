@@ -1,0 +1,7 @@
+pirate(1).
+pirate(2).
+objet(a).
+objet(b).
+deteste(1,2).
+preferences(1,a,b).
+preferences(2,a,b).

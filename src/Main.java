@@ -1,3 +1,5 @@
+
+
 /**
 * Classe Main
 *
@@ -8,14 +10,6 @@
 public class Main {
 
 	public static void main(String args[]) throws Exception {
-		
-		
-		/*Equipage equipage = new Equipage();
-		equipage.nbPirates();
-		equipage.optionMenu();
-		equipage.distributionObjet();
-		equipage.afficheObjetPirate();
-		equipage.echangeMenu();*/
 		
 		Equipage equipage = new Equipage();
 		equipage.readFile(equipage.menuSaisieFichier());

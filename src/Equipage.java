@@ -325,6 +325,10 @@ public class Equipage {
 			}
 			
 		}
+		if(listPirate.size() == 0) {
+			throw new Exception("Le nombre de Pirate ne peut pas être égale à 0 .");
+		}
+		
 		if(!verifPirateObjetPref()) {
 			throw new Exception("Le nombre de Pirate, d'objet et/ou de préferences sont différents .");
 		}
@@ -391,75 +395,97 @@ public class Equipage {
 	*/
 	public void echangeMenu() {
 		
-		Scanner sc;
+		Scanner sc = new Scanner(System.in);
+		Scanner sc2 = new Scanner(System.in);
 		int choix = 0;
-		String pirate1, pirate2;
+		String pirate1 = null, pirate2 = null;
 		boolean choixValide = false;
-		int temp1 = -1;
-		int temp2 = -1;
+
 		do {
 			
-			
-			System.out.println("1) échanger objets");
-			System.out.println("2) afficher coût");
-			System.out.println("3) Fin");
-			
-			sc = new Scanner(System.in);
 			try {
+				System.out.println("\n1) échanger objets");
+				System.out.println("2) afficher coût");
+				System.out.println("3) Fin");
+			
+
+				
 				choix = sc.nextInt();
+				switch (choix) {
+				
+				
+					case 1:
+					
+						try {
+							int temp1 = -1;
+							int temp2 = -1;
+							System.out.println("\nSaisissez le premier pirate pour l'échange : ");
+
+							pirate1 = sc2.nextLine();
+
+							System.out.println("\nSaisissez le deuxième pirate pour l'échange : ");
+							pirate2 = sc2.nextLine();
+
+							
+							for (int i = 0; i < listPirate.size(); i++) {
+								if(pirate1.equals(listPirate.get(i).getNomPirate())) {
+									temp1 = i;
+								}
+								if(pirate2.equals(listPirate.get(i).getNomPirate())) {
+									temp2 = i;
+								}
+			
+							}
+							if (temp1 == -1 && temp2 == -1) {
+								throw new Exception("\nLes pirates "+pirate1+" et "+pirate2+" n'existent pas .");
+							}
+							if(temp1 == -1) {
+								throw new Exception("\nLe pirate "+pirate1+" n'existe pas .");
+							}
+							if(temp2 == -1) {
+								throw new Exception("\nLe pirate "+pirate2+" n'existe pas .");
+							}
+							
+							
+							listPirate.get(temp1).echangeObjet(listPirate.get(temp2));
+							afficheObjetPirate();
+							choixValide = true;
+							
+					}catch (Exception e) {
+						System.out.println(e.getMessage());
+						choixValide = true;
+					}
+						
+					
+					
+					break;
+				case 2:
+					int cout = calculJalousie();
+					System.out.println("\nLe cout en terme de jalousie est de : "+cout+"\n");
+	
+					
+					choixValide = true;
+					
+					break;
+				case 3 :
+					//System.out.println("\n-----------Fin du programme.-----------");
+					System.out.println("\nRetour au menu principal.");
+					choixValide = false;
+					
+					//sc.close();
+					break;
+	
+				default:
+					System.out.println("Veuillez saisir un nombre en 1 et 3.\n");
+					choixValide = true;
+					
+					break;
+				}
 			}catch (InputMismatchException e) {
-				System.out.println("Exception Levé");
+				
+				System.out.println("Veuillez saisir un nombre entier entre 1 et 3. ");
 				sc.nextLine();
 				choixValide = true;
-			}
-			
-			switch (choix) {
-			
-			case 0:
-				System.out.println("Veuillez saisir un nombre entre 1 et 3.");
-				break;
-			case 1:
-				System.out.println("Saisissez le premier pirate pour l'échange : ");
-				sc = new Scanner(System.in);
-				pirate1 = sc.nextLine();
-				System.out.println("Saisissez le deuxième pirate pour l'échange : ");
-				pirate2 = sc.nextLine();
-				
-				for (int i = 0; i < listPirate.size(); i++) {
-					if(pirate1.equals(listPirate.get(i).getNomPirate())) {
-						temp1 = i;
-					}
-					if(pirate2.equals(listPirate.get(i).getNomPirate())) {
-						temp2 = i;
-					}
-				}
-				listPirate.get(temp1).echangeObjet(listPirate.get(temp2));
-				afficheObjetPirate();
-				choixValide = true;
-				
-				
-				break;
-			case 2:
-				int cout = calculJalousie();
-				System.out.println("\nLe cout en terme de jalousie est de : "+cout+"\n");
-
-				
-				choixValide = true;
-				
-				break;
-			case 3 :
-				//System.out.println("\n-----------Fin du programme.-----------");
-				System.out.println("Retour au menu principal.");
-				choixValide = false;
-				
-				//sc.close();
-				break;
-
-			default:
-				System.out.println("Veuillez saisir un nombre en 1 et 3.\n");
-				choixValide = true;
-				
-				break;
 			}
 		
 			} while (choixValide);
@@ -501,7 +527,7 @@ public class Equipage {
 		
 	}
 	
-	public void readFile(String f) {
+	public void readFile(String f) throws Exception{
 		
 		
 		try(BufferedReader br = new BufferedReader ( new FileReader(f))) {
@@ -531,7 +557,8 @@ public class Equipage {
 			}
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("le fichier n'a pas été trouvé");
+			System.out.println("\nLe fichier n'a pas été trouvé .\n");
+			readFile(this.menuSaisieFichier());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -569,7 +596,7 @@ public class Equipage {
 		return st.nextToken();
 	}
 	
-	public void tokenizerPreferences(String s) {
+	public void tokenizerPreferences(String s)throws Exception {
 		String nom;
 		StringTokenizer st = new StringTokenizer(s, "(),.");
 		st.nextToken();
@@ -581,6 +608,10 @@ public class Equipage {
 					temp = i;
 				}
 			}
+		if(temp == -1) {
+			throw new Exception("Le pirate "+nom+" n'existe pas .");
+		}
+		
 		while (st.hasMoreElements()) {
 			
 			estPreference(temp, st.nextToken());
@@ -603,29 +634,74 @@ public class Equipage {
 		
 	}
 	
-	public void estDeteste(String s1,String s2) {
+	public void estDeteste(String s1,String s2)throws Exception {
 		
 		int temp1 = -1;
 		int temp2 = -1;
+		boolean existe1 = false;
+		boolean existe2 = false;
+		
+		if(listPirate.size() == 0) {
+			throw new Exception("Aucun pirate n'existe .");
+		}
+		if(s1.equals(s2)) {
+			throw new Exception("Un pirate ne peut pas se détester lui même .");
+		}
+		for (int i = 0; i < listPirate.size(); i++) {
+			
+			if(listPirate.get(i).getNomPirate().equals(s1)) {
+				for (int j = 0; j < listPirate.get(i).getJalousie().size(); j++) {
+					if(listPirate.get(i).getJalousie().get(j).getNomPirate().equals(s2)) {
+						throw new Exception("Les pirates "+s1+" et "+s2+" se détestent déjà .");
+					}
+				}
+				
+			}
+			
+		}
 		
 		
 		for (int i = 0; i < listPirate.size(); i++) {
 			
 			if(listPirate.get(i).getNomPirate().equals(s1)) {
 				temp1 = i;
+				existe1 = true;
 			}
 			if(listPirate.get(i).getNomPirate().equals(s2)) {
 				temp2 = i;
+				existe2 = true;
 			}
 			
+
+			
 		}
+		
+		if( !existe1 ) {
+			throw new Exception("Le pirate "+s1+" n'existe pas .");
+		}
+		if( !existe2 ) {
+			throw new Exception("Le pirate "+s2+" n'existe pas .");
+		}
+		
 		listPirate.get(temp1).estJaloux(listPirate.get(temp2));
 		listPirate.get(temp2).estJaloux(listPirate.get(temp1));
 	}
 	
-	public void estPreference(int pos,String objet) {
+	public void estPreference(int pos,String objet)throws Exception {
 		
 		int temp = -1;
+		
+		if(listPirate.size() == 0) {
+			throw new Exception("Aucun pirate n'existe .");
+		}
+		if(listPirate.size() == listPirate.get(pos).getPreferenceObjet().size()) {
+			throw new Exception("Un pirate ne peut pas avoir plusieurs listes de préférences .");
+		}
+		for(int i = 0; i < listPirate.get(pos).getPreferenceObjet().size(); i++) {
+			if(listPirate.get(pos).getPreferenceObjet().get(i).getNomObjet().equals(objet)) {
+				throw new Exception("Le pirate "+listPirate.get(pos).getNomPirate()+" a deux fois l'objet "+objet+" dans sa liste de préférences");
+			}
+		}
 
 		for (int i = 0; i < listObjet.size(); i++) {
 			
@@ -633,6 +709,11 @@ public class Equipage {
 				temp = i;
 			}
 		}
+		if(temp == -1) {
+			throw new Exception("L'objet "+objet+" n'existe pas .");
+		}
+		
+		
 		
 		listPirate.get(pos).ajoutPreference(listObjet.get(temp));
 		
@@ -640,60 +721,63 @@ public class Equipage {
 	}
 		
 	public void resolutionMenu() {
-		Scanner sc;
+		Scanner sc = new Scanner(System.in);
 		boolean choixValide = false;
 		int choix;
 		String fichier;
 		
 		do {
-			
+			//sc = new Scanner(System.in);
 			System.out.println("\n1) Résolution automatique");
 			System.out.println("2) Résolution manuelle");
 			System.out.println("3) Sauvegarde");
 			System.out.println("4) Fin\n");
 			
-			sc = new Scanner(System.in);
-			choix = sc.nextInt();
+			try {
+				choix = sc.nextInt();
 			
-			switch (choix) {
-			case 1:
-				
-				resolutionAuto();
+				switch (choix) {
+				case 1:
+					
+					resolutionAuto();
+					choixValide = true;
+					break;
+				case 2:
+					echangeMenu();
+					choixValide = true;
+					
+					break;
+				case 3:
+					System.out.println("\nVeuillez saisir le nom du fichier dans lequel vous souhaitez sauvegarder la résolution : ");
+					sc = new Scanner(System.in);
+					fichier = sc.nextLine();
+					
+					sauvegarde(fichier);
+					choixValide = true;
+					
+					
+					break;
+				case 4:
+					
+					System.out.println("\n---------------- Fin du programme. ----------------");
+					choixValide = false;
+					
+					break;
+	
+				default:
+					
+					System.out.println("Veuillez saisir un nombre entier entre 1 et 4. ");
+					choixValide = true;
+					break;
+				}
+			}catch (InputMismatchException e) {
+				System.out.println("Veuillez saisir un nombre entier entre 1 et 4. ");
 				choixValide = true;
-				break;
-			case 2:
-				echangeMenu();
-				choixValide = true;
-				
-				break;
-			case 3:
-				System.out.println("Veuillez saisir le nom du fichier dans lequel vous souhaitez sauvegarder la résolution : ");
-				sc = new Scanner(System.in);
-				fichier = sc.nextLine();
-				
-				sauvegarde(fichier);
-				choixValide = true;
-				
-				
-				break;
-			case 4:
-				
-				System.out.println("\n-----------Fin du programme.-----------");
-				choixValide = false;
-				
-				break;
-
-			default:
-				
-				System.out.println("Veuillez choisir un nombre en 1 et 4.\n");
-				choixValide = true;
-				break;
+				sc.nextLine();
 			}
-			
 			
 		
 			} while (choixValide);
-		//sc.close();
 		
 		
 		}
@@ -751,9 +835,9 @@ public class Equipage {
 			
 		}
 
-		System.out.println("\nRÉSOLUTION AUTOMATIQUE TERMINÉ ");
-		System.out.println("Le cout est de : "+coutApres);
-		System.out.println("Il y a eu "+nbechange+" échange");
+		System.out.println("\nRÉSOLUTION AUTOMATIQUE TERMINÉ .");
+		System.out.println("Le cout est de : "+coutApres+" .");
+		System.out.println("Il y a eu "+nbechange+" échange .");
 		
 	}
 	

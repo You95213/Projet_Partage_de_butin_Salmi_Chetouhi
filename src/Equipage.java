@@ -24,10 +24,19 @@ import java.util.StringTokenizer;
 */
 public class Equipage {
 		
-	private ArrayList<Pirate> listPirate = new ArrayList<Pirate>();
-	private ArrayList<Objet> listObjet = new ArrayList<Objet>();
-	private ArrayList<Objet> listObjetNonDispo = new ArrayList<Objet>();
+	private ArrayList<Pirate> listPirate;
+	private ArrayList<Objet> listObjet;
+	private ArrayList<Objet> listObjetNonDispo;
 	int choix1;
+	
+	public Equipage() {
+
+		listPirate = new ArrayList<Pirate>();
+		listObjet = new ArrayList<Objet>();
+		listObjetNonDispo = new ArrayList<Objet>();
+		choix1 = 0;
+		
+	}
 	
 	/**
 	* Methode qui permet d'afficher le premier menu
@@ -61,7 +70,6 @@ public class Equipage {
 		}
 				
 	}
-
 
 	/**
 	* Methode qui permet d'afficher le second menu
@@ -152,14 +160,12 @@ public class Equipage {
 				pref1 = sc.nextInt();
 				System.out.println("Veuillez saisir le deuxième objet : ");
 				pref2 = sc.nextInt();
-
 			
 				byte[] bytes3 = pirate.getBytes(StandardCharsets.US_ASCII);
 				pirateInt = bytes3[0]-65;
 				
 				listPirate.get(pirateInt).ajoutPreference(listObjet.get(pref1-1));
 				listPirate.get(pirateInt).ajoutPreference(listObjet.get(pref2-1));
-
 			}
 			else if(choix1 == 1) {
 				System.out.println("Veuillez saisir le pirate à qui vous voulez attribuer ses préferences : ");
@@ -167,14 +173,11 @@ public class Equipage {
 				pirate = sc.nextLine();
 				System.out.println("Veuillez saisir le premier objet : ");
 				pref1 = sc.nextInt();
-
-
 			
 				byte[] bytes3 = pirate.getBytes(StandardCharsets.US_ASCII);
 				pirateInt = bytes3[0]-65;
 				
 				listPirate.get(pirateInt).ajoutPreference(listObjet.get(pref1-1));
-
 				
 			}*/
 			
@@ -503,6 +506,11 @@ public class Equipage {
 		return listPirate;
 	}
 	
+	/**
+	* Methode qui permet d'afficher la liste
+	* des pirate de l'équipage.
+	* 
+	*/
 	public void afficheListePirate() {
 		
 		
@@ -515,6 +523,11 @@ public class Equipage {
 		
 	}
 	
+	/**
+	* Methode qui permet d'afficher la liste
+	* des objets.
+	* 
+	*/
 	public void afficheListeObjet() {
 		
 		
@@ -527,6 +540,13 @@ public class Equipage {
 		
 	}
 	
+	/**
+	* Methode qui permet de lire le 
+	* fichier d'initialisation de l'équipage
+	* 
+	* @param le nom du fichier
+	* 
+	*/
 	public void readFile(String f) throws Exception{
 		
 		
@@ -566,6 +586,15 @@ public class Equipage {
 		
 	}
 	
+	/**
+	* Methode qui permet de couper et de
+	* récupérer une partie d'un String en
+	* utilisant un tokenizer
+	* 
+	* @param la chaine de caractère a couper
+	* @return la chaine de caratère qu'on souhaite
+	* récupérer
+	*/
 	public String tokenizer(String s) {
 		
 		StringTokenizer st = new StringTokenizer(s, "().");
@@ -573,6 +602,14 @@ public class Equipage {
 		return st.nextToken();
 	}
 	
+	/**
+	* Methode qui permet de couper et de
+	* récupérer la partie nom d'un pirate ou 
+	* objet
+	* 
+	* @param la chaine de caractère a couper
+	* @return le nom qu'on souhaite récupérer
+	*/
 	public String tokenizerNom(String s) {
 		
 		StringTokenizer st = new StringTokenizer(s, "().");
@@ -581,6 +618,14 @@ public class Equipage {
 		return st.nextToken();
 	}
 	
+	/**
+	* Methode qui permet de couper et de
+	* récupérer le nom du premier pirate 
+	* qui se déteste
+	* 
+	* @param la chaine de caractère a couper
+	* @return le nom qu'on souhaite récupérer
+	*/
 	public String tokenizerDeteste1(String s) {
 		StringTokenizer st = new StringTokenizer(s, "().,");
 		//System.out.println(st.nextToken());
@@ -588,6 +633,14 @@ public class Equipage {
 		return st.nextToken();
 	}
 	
+	/**
+	* Methode qui permet de couper et de
+	* récupérer le nom du second pirate 
+	* qui se déteste
+	* 
+	* @param la chaine de caractère a couper
+	* @return le nom qu'on souhaite récupérer
+	*/
 	public String tokenizerDeteste2(String s) {
 		StringTokenizer st = new StringTokenizer(s, "().,");
 		//System.out.println(st.nextToken());
@@ -596,6 +649,15 @@ public class Equipage {
 		return st.nextToken();
 	}
 	
+	/**
+	* Methode qui permet de couper et de
+	* récupérer le nom et les préferences d'un pirate 
+	* et d'ajouter ces préférences dans sa liste 
+	* de préférences
+	* 
+	* @param la chaine de caractère a couper
+	* 
+	*/
 	public void tokenizerPreferences(String s)throws Exception {
 		String nom;
 		StringTokenizer st = new StringTokenizer(s, "(),.");
@@ -622,18 +684,37 @@ public class Equipage {
 
 	}
 	
+	/**
+	* Methode qui permet d'ajouter un nouveau
+	* pirate à la liste des pirates
+	* 
+	* @param le nom du pirate
+	*/
 	public void estPirate(String s) {
 		
 		listPirate.add(new Pirate(s));
 		
 	}
 	
+	/**
+	* Methode qui permet d'ajouter un nouvelle
+	* objet à la liste des objets
+	* 
+	* @param le nom de l'objet
+	*/
 	public void estObjet(String s) {
 		
 		listObjet.add(new Objet(s));
 		
 	}
 	
+	/**
+	* Methode qui permet d'ajouter la relation 
+	* de jalousie entre deux pirates
+	* 
+	* @param le nom du premier pirate
+	* @param le nom du second pirate
+	*/
 	public void estDeteste(String s1,String s2)throws Exception {
 		
 		int temp1 = -1;
@@ -687,6 +768,13 @@ public class Equipage {
 		listPirate.get(temp2).estJaloux(listPirate.get(temp1));
 	}
 	
+	/**
+	* Methode qui permet d'ajouter les préférences 
+	* des pirates
+	* 
+	* @param l'indice du pirate dans la liste
+	* @param le nom de l'objet
+	*/
 	public void estPreference(int pos,String objet)throws Exception {
 		
 		int temp = -1;
@@ -720,6 +808,11 @@ public class Equipage {
 			
 	}
 		
+	/**
+	* Methode qui permet d'afficher le menu qui 
+	* permet de choisir entre les différentes résolution
+	* 
+	*/
 	public void resolutionMenu() {
 		Scanner sc = new Scanner(System.in);
 		boolean choixValide = false;
@@ -781,7 +874,14 @@ public class Equipage {
 		
 		
 		}
-				
+	
+	/**
+	* Methode qui permet de sauvegarder la solution
+	* dans un fichier
+	* 
+	* @param le nom du fichier dans lequel faire la sauvegarde
+	* 
+	*/
 	public void sauvegarde(String s) {
 		
 		try (PrintWriter printW = new PrintWriter(new BufferedWriter(new FileWriter(s)))) {
@@ -802,6 +902,11 @@ public class Equipage {
 		
 	}
 	
+	/**
+	* Methode qui permet d'effectuer une résolution
+	* automatique à partir d'un algorithme
+	* 
+	*/
 	public void resolutionAuto() {
 		int nb_pirate = listPirate.size();
 		int coutAvant = 1;
@@ -841,6 +946,13 @@ public class Equipage {
 		
 	}
 	
+	/**
+	* Methode qui permet de calculer le cout
+	* en terme de jalousie
+	* 
+	* @return le cout en terme de jalousie
+	* 
+	*/
 	public int calculJalousie() {
 		
 		int sommeJalousie = 0;
@@ -855,6 +967,13 @@ public class Equipage {
 		return sommeJalousie;
 	}
 	
+	/**
+	* Methode qui permet à l'utilisateur de saisir le 
+	* nom du fichier ou lire les inforation de l'équipage
+	* 
+	* @return le nom du fichier
+	* 
+	*/
 	public String menuSaisieFichier() {
 		Scanner sc;
 		String nomFile;
@@ -866,6 +985,14 @@ public class Equipage {
 		return nomFile;
 	}
 	
+	/**
+	* Methode qui permet de vérifier le nombre de
+	* pirate, le nombre d'objet et le nombre de préférences 
+	* sont égales
+	* 
+	* @return true s'ils sont égales false sinon.
+	* 
+	*/
 	public boolean verifPirateObjetPref() {
 		
 		int nbPirate = listPirate.size();

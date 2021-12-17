@@ -16,10 +16,6 @@ public class Pirate {
 	private Objet objet;
 	private boolean possedeObjet;  
 	
-	
-	
-	
-	
 	public Pirate(String nom) {
 		
 		this.nom = nom;
